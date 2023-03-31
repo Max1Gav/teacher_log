@@ -1,3 +1,7 @@
+#!/bin/python3
+
+from pprint import pprint
+
 disciplines = {
     1: 'Математика',
     2: 'Чтение',
@@ -5,8 +9,10 @@ disciplines = {
     4: 'Физкультура'
 }
 
-students = ['Иванов Вася']
 marks = {}
+students = ['Иванов Вася']
+marks[students[-1]] = {}
+pprint(marks)
 
 ### пример вывода значений словаря
 #print("\n".join(disciplines.values()))
@@ -16,6 +22,8 @@ while True:
     name = input('Введите имя ученика, 0 для отмены: ')
     if name != '0':
         students.append(name)
+        marks[students[-1]] = {}
+        pprint(marks)
     else:
         break
 
@@ -44,13 +52,14 @@ while True:
         discipline_id = ''
         while True:
             print_disciplines()
+            discipline_id = int(input('0. Отмена\nВыберите предмет для оценки ученика ' + students[student_id - 1] + ': '))
             if discipline_id == 0:
                 print('Завершили ввод предмета у', students[student_id - 1])
                 break
-            discipline_id = int(input('0. Отмена\nВыберите предмет для оценки ученика ' + students[student_id - 1] + ': '))
             mark = input('Задайте отметку [12345НС]: ')
             d = disciplines[discipline_id]
-            marks[students[student_id]] = { d: mark }
+            #marks[students[student_id - 1]] = { d: mark }
+            marks[students[student_id - 1]][disciplines[discipline_id]] = mark
     else:
         print('Завершили ввод оценок у', students[student_id-1])
         break
@@ -59,15 +68,4 @@ while True:
 
 
 ## Вывод журнала отметок
-print(marks)
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-#if __name__ == '__main__':
-#    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+pprint(marks)
