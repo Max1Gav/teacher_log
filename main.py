@@ -1,6 +1,6 @@
 #!/bin/python3
 
-from pprint import pprint
+#from pprint import pprint
 
 disciplines = {
     1: 'Математика',
@@ -12,7 +12,6 @@ disciplines = {
 marks = {}
 students = ['Иванов Вася']
 marks[students[-1]] = {}
-pprint(marks)
 
 ### пример вывода значений словаря
 #print("\n".join(disciplines.values()))
@@ -23,7 +22,6 @@ while True:
     if name != '0':
         students.append(name)
         marks[students[-1]] = {}
-        pprint(marks)
     else:
         break
 
@@ -43,11 +41,28 @@ def print_disciplines():
     print('\nСписок уроков:')
     for i in disciplines.keys():
         print(i, disciplines[i], sep='. ')
+        
+def print_marks():
+    print('\nСодержимое журнала:')
+    for s in students:
+        print(s + ':')
+        for d in marks[s]:
+            print(' - ' + d + '\t' + marks[s][d])
+            
+    #pprint(marks)
 
 ## Цикл ввода отметок с выбором ученика
 while True:
     print_students()
-    student_id = int(input('0. Завершение\nВыберите ученика: '))
+    
+    try:
+        student_id = int(input('0. Завершение\nВыберите ученика: '))
+    except ValueError:
+        continue
+        
+    if student_id > len(students):
+        continue
+    
     if student_id != 0:
         discipline_id = ''
         while True:
@@ -58,14 +73,13 @@ while True:
                 break
             mark = input('Задайте отметку [12345НС]: ')
             d = disciplines[discipline_id]
-            #marks[students[student_id - 1]] = { d: mark }
             marks[students[student_id - 1]][disciplines[discipline_id]] = mark
     else:
-        print('Завершили ввод оценок у', students[student_id-1])
+        print('Завершили ввод оценок у', students[student_id - 1])
         break
 
 ### Ввод отметки к выбранному предмету
 
 
 ## Вывод журнала отметок
-pprint(marks)
+print_marks()
