@@ -1,29 +1,69 @@
 #!/bin/python3
 
-#from pprint import pprint
+from pprint import pprint
+import pickle
 
-disciplines = {
-    1: 'Математика',
-    2: 'Чтение',
-    3: 'Прописи',
-    4: 'Физкультура'
-}
-
+disciplines = {}
 marks = {}
-students = ['Иванов Вася']
-marks[students[-1]] = {}
+students = []
+
+def data_init():
+    global disciplines
+    global students
+    global marks
+
+    disciplines = {
+        1: 'Математика',
+        2: 'Чтение',
+        3: 'Прописи',
+        4: 'Физкультура'
+    }
+    students = ['Иванов Вася']
+    marks[students[-1]] = {}
+
+def data_save():
+    data = {
+        'disciplines': disciplines,
+        'students': students,
+        'marks': marks
+    }
+    
+    with open('data.bin', 'wb') as file:
+        pickle.dump(data, file)
+    
+def data_load():
+    global disciplines
+    global students
+    global marks
+    data = {}
+    
+    with open('data.bin', 'rb') as file:
+        data = pickle.load(file)
+        
+        disciplines = data['disciplines']
+        students = data['students']
+        marks = data['marks']
+        
+        pprint(students)
+        # {'Иванов Вася'}
+
+#data_init()
+#data_save()
+
+data_load()
 
 ### пример вывода значений словаря
 #print("\n".join(disciplines.values()))
 
-## Цикл ввода имён
-while True:
-    name = input('Введите имя ученика, 0 для отмены: ')
-    if name != '0':
-        students.append(name)
-        marks[students[-1]] = {}
-    else:
-        break
+def add_student():
+    ## Цикл ввода имён
+    while True:
+        name = input('Введите имя ученика, 0 для отмены: ')
+        if name != '0':
+            students.append(name)
+            marks[students[-1]] = {}
+        else:
+            break
 
 # тестовый вывод списка учеников
 # print("\n".join(students))
@@ -50,6 +90,20 @@ def print_marks():
             print(' - ' + d + '\t' + marks[s][d])
             
     #pprint(marks)
+
+print('1. Список учеников')
+print('2. Список уроков\n')
+print('0. Завершение')
+while True:
+    choice = input('Сделайте выбор [012]: ')
+    if choice == '1':
+        print_students()
+    elif choice == '2':
+        print_disciplines()
+    elif choice == '0':
+        break
+
+#add_student()
 
 ## Цикл ввода отметок с выбором ученика
 while True:
@@ -83,3 +137,5 @@ while True:
 
 ## Вывод журнала отметок
 print_marks()
+
+data_save()
